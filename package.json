@@ -1,0 +1,20 @@
+{
+  "name": "mern-boilerplate-v1",
+  "version": "1.0.0",
+  "main": "index.js",
+  "license": "MIT",
+  "scripts": {
+    "docker-up": "docker-compose -f docker-compose.yml up -d --build --force-recreate",
+    "docker-down": "docker-compose -f docker-compose.yml down",
+    "docker-stop": "docker-compose -f docker-compose.yml stop",
+    "client-install": "cd client && yarn run build",
+    "server-install": "cd server && yarn run build",
+    "start-client-build": "cd client && yarn run start",
+    "start-server-build": "cd server && yarn run start",
+    "preInstall": "concurrently \"yarn run client-install\" \"yarn run server-install\"",
+    "start": "concurrently \"yarn run start-client-build\" \"yarn run start-server-build\""
+  },
+  "dependencies": {
+    "concurrently": "^7.0.0"
+  }
+}
