@@ -1,0 +1,108 @@
+query GetServers {
+  allServers {
+    id
+    name
+    owner {
+      id
+      email
+      discriminator
+    }
+    channels {
+      id
+      name
+    }
+  }
+}
+
+query GetServerData($id: ID!) {
+  getServer(id: $id) {
+    id
+    name
+    owner {
+      id
+    }
+    channels {
+      id
+      name
+    }
+    users {
+      id
+      username
+      email
+      discriminator
+    }
+  }
+}
+
+mutation CreateServer($name: String!) {
+  createServer(name: $name) {
+    ok
+    server {
+      id
+      name
+      owner {
+        id
+        email
+      }
+    }
+  }
+}
+
+mutation DeleteServer($deleteServerId: ID!) {
+  deleteServer(id: $deleteServerId) {
+    ok
+  }
+}
+
+query GetMembers($serverId: ID!) {
+  getMembers(id: $serverId) {
+    id
+    username
+    email
+    discriminator
+  }
+}
+
+mutation AddMember($id: ID!, $serverId: ID!) {
+  addMember(id: $id, serverId: $serverId) {
+    ok
+  }
+}
+
+mutation RemoveMember($id: ID!, $serverId: ID!) {
+  removeMember(id: $id, serverId: $serverId) {
+    ok
+  }
+}
+
+subscription UserJoined {
+  userJoined {
+    id
+    name
+    owner {
+      id
+      email
+      discriminator
+    }
+    channels {
+      id
+      name
+    }
+  }
+}
+
+subscription UserRemoved {
+  userRemoved {
+    id
+    name
+    owner {
+      id
+      email
+      discriminator
+    }
+    channels {
+      id
+      name
+    }
+  }
+}

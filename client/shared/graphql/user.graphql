@@ -1,0 +1,36 @@
+mutation RegisterUser($username: String!, $email: String!, $password: String!) {
+  registerUser(username: $username, email: $email, password: $password) {
+    ok
+    user {
+      id
+      username
+      email
+    }
+  }
+}
+
+mutation LoginUser($email: String!, $password: String!) {
+  loginUser(email: $email, password: $password) {
+    access_token
+  }
+}
+
+query GetMe {
+  me {
+    id
+    email
+    username
+  }
+}
+
+query GetUsers {
+  getUsers {
+    id
+    email
+    username
+    discriminator
+    servers {
+      id
+    }
+  }
+}

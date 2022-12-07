@@ -1,0 +1,37 @@
+subscription MessageDMCreated($senderId: ID!) {
+  messageDMCreated(senderId: $senderId) {
+    id
+    body
+    sender {
+      id
+      username
+    }
+    receiver {
+      id
+      username
+    }
+    createdAt
+  }
+}
+
+mutation CreateDMessage($receiverId: ID!, $body: String!) {
+  createDMMessage(receiverId: $receiverId, body: $body) {
+    ok
+  }
+}
+
+query GetDMMessage($senderId: ID!, $cursor: String) {
+  getDMMessages(senderId: $senderId, cursor: $cursor) {
+    id
+    body
+    sender {
+      id
+      username
+    }
+    receiver {
+      id
+      username
+    }
+    createdAt
+  }
+}

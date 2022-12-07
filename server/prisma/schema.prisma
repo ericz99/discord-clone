@@ -1,0 +1,89 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+datasource db {
+  provider             = "mysql"
+  url                  = env("DATABASE_URL")
+}
+
+generator client {
+  provider        = "prisma-client-js"
+}
+
+model User {
+  id            String           @id @default(cuid())
+  username      String
+  email         String           @unique
+  password      String
+  discriminator String           @unique
+  createdAt     DateTime         @default(now())
+  updatedAt     DateTime         @updatedAt
+  serverOwners  Server[]
+  senders       DirectMessage[]  @relation("senders")
+  receivers     DirectMessage[]  @relation("receivers")
+  messages      Message[]
+  servers       UsersOnServers[]
+}
+
+model UsersOnServers {
+  user     User   @relation(fields: [userId], references: [id])
+  userId   String // relation scalar field (used in the `@relation` attribute above)
+  server   Server @relation(fields: [serverId], references: [id])
+  serverId String // relation scalar field (used in the `@relation` attribute above)
+
+  @@id([userId, serverId])
+}
+
+model Server {
+  id        String           @unique @default(cuid())
+  owner     User             @relation(fields: [ownerId], references: [id])
+  ownerId   String
+  name      String
+  createdAt DateTime         @default(now())
+  updatedAt DateTime         @updatedAt
+  channels  Channel[]
+  users     UsersOnServers[]
+
+  @@id([id, ownerId])
+}
+
+model Channel {
+  id        String    @unique @default(cuid())
+  server    Server    @relation(fields: [serverId], references: [id])
+  serverId  String
+  messages  Message[]
+  name      String
+  createdAt DateTime  @default(now())
+  updatedAt DateTime  @updatedAt
+
+  @@id([id, serverId])
+}
+
+model Message {
+  id        String  @unique @default(cuid())
+  channel   Channel @relation(fields: [channelId], references: [id])
+  channelId String
+
+  user   User   @relation(fields: [userId], references: [id])
+  userId String
+
+  body      String
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  @@id([id, channelId, userId])
+}
+
+model DirectMessage {
+  id   String @id @default(cuid())
+  body String
+
+  sender   User   @relation("senders", fields: [senderId], references: [id])
+  senderId String
+
+  receiver   User   @relation("receivers", fields: [receiverId], references: [id])
+  receiverId String
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+}

@@ -1,0 +1,44 @@
+query GetChannels($serverId: ID!) {
+  getChannels(serverId: $serverId) {
+    id
+    name
+  }
+}
+
+mutation CreateChannel($name: String!, $serverId: ID!) {
+  createChannel(name: $name, serverId: $serverId) {
+    ok
+    channel {
+      id
+      name
+    }
+  }
+}
+
+mutation DeleteChannel($deleteChannelId: ID!, $serverId: ID!) {
+  deleteChannel(id: $deleteChannelId, serverId: $serverId) {
+    ok
+  }
+}
+
+subscription ChannelCreated($serverId: ID!) {
+  channelCreated(serverId: $serverId) {
+    id
+    name
+    server {
+      id
+      name
+    }
+  }
+}
+
+subscription ChannelDeleted($serverId: ID!) {
+  channelDeleted(serverId: $serverId) {
+    id
+    name
+    server {
+      id
+      name
+    }
+  }
+}

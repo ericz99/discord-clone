@@ -1,0 +1,37 @@
+subscription MessageCreated($channelId: ID!) {
+  messageCreated(channelId: $channelId) {
+    id
+    body
+    user {
+      id
+      username
+    }
+    channel {
+      id
+      name
+    }
+    createdAt
+  }
+}
+
+mutation CreateMessage($channelId: ID!, $body: String!) {
+  createMessage(channelId: $channelId, body: $body) {
+    ok
+  }
+}
+
+query GetMessage($channelId: ID!, $cursor: String) {
+  messages(channelId: $channelId, cursor: $cursor) {
+    id
+    body
+    user {
+      id
+      username
+    }
+    channel {
+      id
+      name
+    }
+    createdAt
+  }
+}
